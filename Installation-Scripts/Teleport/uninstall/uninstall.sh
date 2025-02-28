@@ -33,9 +33,9 @@ else
 fi
 
 # Uninstall Teleport package
-if yum list installed teleport &>/dev/null; then
+if apt list installed teleport &>/dev/null; then
     echo "Uninstalling Teleport package..."
-    yum remove -y teleport
+    apt remove -y teleport
 else
     echo "Teleport package is not installed."
 fi
