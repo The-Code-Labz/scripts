@@ -4,14 +4,19 @@
 # WARNING: This script will remove Teleport data and configuration.  Use with caution.
 
 echo "This script will remove Teleport data and configuration. Are you sure you want to continue? (y/n)"
-read -r answer
+
+# Use a timeout to prevent indefinite hanging if no input is received.
+read -r -t 5 answer
+
+# Trim whitespace from the answer
+answer=$(echo "$answer" | tr -d '[:space:]')
+
+echo "You entered: '$answer'"  # Debugging line
 
 if [[ "$answer" != "y" ]]; then
   echo "Aborting cleanup."
   exit 1
 fi
-
-echo "Starting Teleport cleanup..."
 
 # Stop Teleport service
 echo "- Stopping Teleport service..."
