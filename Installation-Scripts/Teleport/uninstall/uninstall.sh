@@ -6,7 +6,7 @@
 echo "This script will remove Teleport data and configuration. Are you sure you want to continue? (y/n)"
 
 # Use a timeout to prevent indefinite hanging if no input is received.
-read -r -t 5 answer
+read -r answer
 
 # Trim whitespace from the answer
 answer=$(echo "$answer" | tr -d '[:space:]')
