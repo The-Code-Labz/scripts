@@ -1,68 +1,43 @@
 #!/bin/bash
 
-# Script to clean up Teleport installation.
-# WARNING: This script will remove Teleport data and configuration.  Use with caution.
-
-echo "This script will remove Teleport data and configuration. Are you sure you want to continue? (y/n)"
-
-# Use a timeout to prevent indefinite hanging if no input is received.
-read -r answer
-
-# Trim whitespace from the answer
-answer=$(echo "$answer" | tr -d '[:space:]')
-
-echo "You entered: '$answer'"  # Debugging line
-
-if [[ "$answer" != "y" ]]; then
-  echo "Aborting cleanup."
-  exit 1
-fi
-
-# Stop Teleport service
-echo "- Stopping Teleport service..."
-sudo systemctl stop teleport 2>/dev/null
-if [ $? -eq 0 ]; then
-  echo "  Teleport service stopped successfully."
+# Stop Teleport service if running
+if systemctl is-active --quiet teleport; then
+    echo "Stopping Teleport service..."
+    systemctl stop teleport
 else
-  echo "  Teleport service may not be running or could not be stopped.  Continuing..."
+    echo "Teleport service is not running."
 fi
 
-# Stop any running Teleport processes
-echo "- Stopping any running Teleport processes..."
-sudo pkill -f teleport 2>/dev/null
-if [ $? -eq 0 ]; then
-  echo "  Teleport processes stopped successfully."
+# Kill any running Teleport processes
+if pgrep -f teleport > /dev/null; then
+    echo "Killing Teleport processes..."
+    pkill -f teleport
 else
-  echo "  No Teleport processes found or could not be stopped.  Continuing..."
+    echo "No running Teleport processes found."
 fi
 
-# Remove data under /var/lib/teleport and the directory itself
-echo "- Removing data under /var/lib/teleport..."
-sudo rm -rf /var/lib/teleport
-if [ $? -eq 0 ]; then
-  echo "  /var/lib/teleport removed successfully."
+# Remove Teleport data directory
+if [ -d /var/lib/teleport ]; then
+    echo "Removing /var/lib/teleport..."
+    rm -rf /var/lib/teleport
 else
-  echo "  Failed to remove /var/lib/teleport.  Check permissions and existence.  Continuing..."
+    echo "No data directory found at /var/lib/teleport."
 fi
 
-# Remove configuration at /etc/teleport.yaml
-echo "- Removing configuration at /etc/teleport.yaml..."
-sudo rm -f /etc/teleport.yaml
-if [ $? -eq 0 ]; then
-  echo "  /etc/teleport.yaml removed successfully."
+# Remove Teleport configuration file
+if [ -f /etc/teleport.yaml ]; then
+    echo "Removing /etc/teleport.yaml..."
+    rm -f /etc/teleport.yaml
 else
-  echo "  Failed to remove /etc/teleport.yaml.  Check permissions and existence.  Continuing..."
+    echo "No configuration file found at /etc/teleport.yaml."
 fi
 
-# Remove Teleport package
-echo "- Removing Teleport package..."
-sudo apt remove teleport -y
-if [ $? -eq 0 ]; then
-  echo "  Teleport package removed successfully."
+# Uninstall Teleport package
+if yum list installed teleport &>/dev/null; then
+    echo "Uninstalling Teleport package..."
+    yum remove -y teleport
 else
-  echo "  Failed to remove Teleport package.  Package may not be installed or apt is not configured. Continuing..."
+    echo "Teleport package is not installed."
 fi
 
-echo "Teleport cleanup complete.  Run the installer again to reinstall Teleport."
-
-exit 0
+echo "Teleport has been completely removed."
