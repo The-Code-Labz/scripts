@@ -19,5 +19,6 @@ sudo apt install -y docker-compose
 echo "Starting Docker service..."
 sudo systemctl start docker
 sudo systemctl enable docker
+sudo docker info
 
 echo "Installation complete!"
