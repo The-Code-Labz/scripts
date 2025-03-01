@@ -20,5 +20,13 @@ echo "Starting Docker service..."
 sudo systemctl start docker
 sudo systemctl enable docker
 
-echo "Installation complete!"
-sudo docker info
+# Add the current user to the Docker group
+echo "Adding $(whoami) to the docker group..."
+sudo usermod -aG docker $(whoami)
+
+# Refresh group membership without requiring logout
+echo "Refreshing group membership..."
+newgrp docker <<EOF
+  echo "Installation complete!"
+  docker info
+EOF

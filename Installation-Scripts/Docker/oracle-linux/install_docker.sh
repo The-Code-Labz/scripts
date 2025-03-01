@@ -26,5 +26,13 @@ echo "Installing Docker Compose..."
 sudo dnf install -y python3-pip
 sudo pip3 install docker-compose
 
-echo "Installation complete!"
-sudo docker info
+# Add the current user to the Docker group
+echo "Adding $(whoami) to the docker group..."
+sudo usermod -aG docker $(whoami)
+
+# Refresh group membership without requiring logout
+echo "Refreshing group membership..."
+newgrp docker <<EOF
+  echo "Installation complete!"
+  docker info
+EOF
