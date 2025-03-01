@@ -25,6 +25,6 @@ sudo systemctl enable docker
 echo "Installing Docker Compose..."
 sudo dnf install -y python3-pip
 sudo pip3 install docker-compose
-sudo docker info
 
 echo "Installation complete!"
+sudo docker info
