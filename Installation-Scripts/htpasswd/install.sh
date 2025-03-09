@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Update and upgrade the system first
-echo "Running system update and upgrade..."
-sudo apt update && sudo apt upgrade -y
-
 # Function to check if htpasswd is installed
 check_install_htpasswd() {
     if ! command -v htpasswd &>/dev/null; then
@@ -14,20 +10,39 @@ check_install_htpasswd() {
     fi
 }
 
+# Function to check if the system is up to date
+check_system_update() {
+    echo "Checking if the system is up to date..."
+    # Check for available updates
+    updates_available=$(apt list --upgradable 2>/dev/null | grep -c "upgradable")
+
+    if [ "$updates_available" -eq 0 ]; then
+        echo "System is up to date. Skipping update."
+    else
+        echo "Updates available. Running update and upgrade..."
+        sudo apt update && sudo apt upgrade -y
+    fi
+}
+
 # Prompt user for username and password
 read -p "Enter username (avoid special characters like ':'): " username
+echo "You entered username: $username"  # Debugging line to confirm input
 read -s -p "Enter password: " password
-echo ""
+echo ""  # Newline for output clarity
+echo "You entered password: [hidden]"  # Password is not shown for security
 
 # Check if htpasswd is installed, and install if necessary
 check_install_htpasswd
 
+# Check if system needs an update
+check_system_update
+
 # Generate htpasswd hash
 hashed_password=$(htpasswd -nbB "$username" "$password" 2>/dev/null | sed -e 's/\$/\$\$/g')
 
-# Check if the username contains an illegal character
-if [[ $? -ne 0 ]]; then
-    echo "Error: username contains illegal characters (e.g., ':'). Please try again."
+# Debugging: Check if the hash generation succeeded
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to generate htpasswd entry. Please check your input."
     exit 1
 fi
 
