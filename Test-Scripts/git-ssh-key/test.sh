@@ -12,7 +12,7 @@ PRIVATE_KEY_OUTPUT="${TEMP_DIR}/${SSH_KEY_NAME}"
 PUBLIC_KEY_OUTPUT="${TEMP_DIR}/${SSH_KEY_NAME}.pub"
 CUSTOM_KEY_FILE="${TEMP_DIR}/id_rsa"
 DEFAULT_DNS="1.1.1.1"
-DEFAULT_PORT=2424
+DEFAULT_PORT=22
 
 # Step 1: Prompt User to Input Private Key Using Nano
 echo "Opening nano editor for private key input..."
@@ -80,17 +80,17 @@ read -p "Enter the GitLab SSH URL (e.g., ssh://git@gitlab.com:2424/user/project.
 # Remove 'ssh://' if present in the URL
 GITLAB_SSH_URL=$(echo "$GITLAB_SSH_URL" | sed 's|ssh://||')
 
-# Extract hostname and repository path from the SSH URL
+# Extract hostname, port, and repository path from the SSH URL
 HOSTNAME=$(echo "$GITLAB_SSH_URL" | cut -d'@' -f2 | cut -d':' -f1)
-REPO_PATH=$(echo "$GITLAB_SSH_URL" | cut -d':' -f2)
+REPO_PATH=$(echo "$GITLAB_SSH_URL" | sed -n 's|.*:.*:||p')
 
 # Default port
 PORT=$DEFAULT_PORT
 
-# Check for a custom port (e.g., gitlab.com:2424)
-if [[ "$HOSTNAME" =~ :([0-9]+)$ ]]; then
-  PORT="${BASH_REMATCH[1]}"
-  HOSTNAME=$(echo "$HOSTNAME" | cut -d':' -f1)  # Remove the port from the hostname
+# Check for a custom port (e.g., gitlab.neurolearninglabs.com:2424)
+if [[ "$GITLAB_SSH_URL" =~ @([^:]+):([0-9]+) ]]; then
+  HOSTNAME="${BASH_REMATCH[1]}"
+  PORT="${BASH_REMATCH[2]}"
 fi
 
 echo "Parsed Hostname: $HOSTNAME"
