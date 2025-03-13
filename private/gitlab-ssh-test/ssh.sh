@@ -1,23 +1,52 @@
-2. Debug the SSH Key
+#!/bin/bash
 
+# Exit if any command fails
+set -e
 
-Ensure the SSH Key Is Correct:
+# Temporary file to store the private key
+TEMP_PRIVATE_KEY_FILE="/tmp/temp_ssh_key"
 
-Double-check the DEPLOY_KEY variable in your CI/CD settings.
+# Function to check if SSH agent is running
+check_ssh_agent() {
+  if [ -z "$SSH_AUTH_SOCK" ]; then
+    echo "Starting ssh-agent..."
+    eval "$(ssh-agent -s)"
+  fi
+}
 
-Ensure that the private key is correctly added to the DEPLOY_KEY variable and matches the public key added as the Deploy Key in GitLab.
+# Prompt the user to paste the private key
+echo "Paste your private key below (end with Ctrl+D):"
+PRIVATE_KEY=$(cat)  # Capture multiline input
 
+# Validate that a private key was entered
+if [[ -z "$PRIVATE_KEY" || ! "$PRIVATE_KEY" =~ "PRIVATE KEY" ]]; then
+  echo "Error: Invalid or empty private key."
+  exit 1
+fi
 
+# Save the private key to a temporary file
+echo "Saving private key to a temporary file..."
+echo "$PRIVATE_KEY" > "$TEMP_PRIVATE_KEY_FILE"
+chmod 600 "$TEMP_PRIVATE_KEY_FILE"
 
-Test the SSH Key Locally:
+# Add the private key to the SSH agent
+echo "Adding the private key to the SSH agent..."
+check_ssh_agent
+ssh-add "$TEMP_PRIVATE_KEY_FILE"
 
-On your local machine, add the private key to your SSH agent:
-ssh-add /path/to/id_rsa
+# Prompt the user for the GitLab repository domain
+echo "Enter the GitLab repository domain (e.g., gitlab.neurolearninglabs.com):"
+read -r GITLAB_DOMAIN
 
+# Test the SSH connection to the repository
+echo "Testing SSH connection to GitLab..."
+ssh -T "git@$GITLAB_DOMAIN"
 
-Test the SSH connection to the repository:
-ssh -T git@gitlab.neurolearninglabs.com
+# Check the result of the SSH test
+if [ $? -eq 0 ]; then
+  echo "SSH connection successful! Your SSH key is working."
+else
+  echo "SSH connection failed. Please check your private key and GitLab settings."
+fi
 
-
-If successful, you should see a message like:
-Welcome to GitLab, @username!
+# Clean up: remove the private key from the SSH agent
