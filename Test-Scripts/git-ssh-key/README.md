@@ -1,0 +1,1 @@
+use this to execute:  curl -s -o /tmp/test.sh https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Test-Scripts/git-ssh-key/test.sh && bash /tmp/test.sh && rm -f /tmp/test.sh
