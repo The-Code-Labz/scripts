@@ -12,7 +12,7 @@ PRIVATE_KEY_OUTPUT="${TEMP_DIR}/${SSH_KEY_NAME}"
 PUBLIC_KEY_OUTPUT="${TEMP_DIR}/${SSH_KEY_NAME}.pub"
 CUSTOM_KEY_FILE="${TEMP_DIR}/id_rsa"
 DEFAULT_DNS="1.1.1.1"
-DEFAULT_PORT=22
+DEFAULT_PORT=2424
 
 # Step 1: Prompt User to Input Private Key Using Nano
 echo "Opening nano editor for private key input..."
