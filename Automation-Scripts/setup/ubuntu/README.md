@@ -1,1 +1,1 @@
-command:  
+command: curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Automation-Scripts/setup/ubuntu/setup.sh | bash
