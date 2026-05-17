@@ -1,3 +1,13 @@
-here is the command: 
-curl -sL "https://gitlab.neurolearninglabs.com/code-labz/scripts/-/raw/main/Ubuntu%20Scripts/Add%20User/user.sh?ref_type=heads" | sudo bash -s user pass yes
-use this command to instantly add a new user and add them to the sudo group
+# Add User — Ubuntu
+
+Creates a new user with optional sudo privileges.
+
+## Usage
+
+```bash
+curl -sL "https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Automation-Scripts/Add%20User/Ubuntu/user.sh" | sudo bash -s <username> <password> yes
+```
+
+**Arguments:** `<username>` `<password>` `yes|no` (sudo grant)
+
+> ⚠️ Must be run as root.
