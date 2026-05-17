@@ -1,5 +1,11 @@
-run as root
-here is the command: 
-curl -fsSL "https://gitlab.neurolearninglabs.com/code-labz/scripts/-/raw/main/Installation-Scripts/Teleport/uninstall/oracle-linux/uninstall.sh?ref_type=heads" | bash   #curl 
-wget -qO- "https://gitlab.neurolearninglabs.com/code-labz/scripts/-/raw/main/Installation-Scripts/Teleport/uninstall/oracle-linux/uninstall.sh?ref_type=heads" | bash  #wget
-use this command to instantly download and start ufw on debian based linux images or ones that have apt for their package manager 
+# Teleport Removal — Oracle Linux
+
+Completely removes Teleport from Oracle Linux/RHEL.
+
+## Usage
+
+```bash
+curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Removal-Scripts/Teleport/oracle-linux/uninstall.sh | bash
+```
+
+> ⚠️ Run as root.
