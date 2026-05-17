@@ -1,32 +1,22 @@
 #!/bin/bash
+set -e
 
-# Update the package list
-echo "Updating package list..."
-sudo apt update
+echo "[+] Installing Docker CE on Ubuntu..."
 
-# Upgrade the existing packages
-echo "Upgrading packages..."
-sudo apt upgrade -y
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg lsb-release
 
-# Install Docker and Docker Compose
-echo "Installing Docker..."
-sudo apt install -y docker.io
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-echo "Installing Docker Compose..."
-sudo apt install -y docker-compose
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# Start and enable Docker service
-echo "Starting Docker service..."
-sudo systemctl start docker
-sudo systemctl enable docker
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Add the current user to the Docker group
-echo "Adding $(whoami) to the docker group..."
-sudo usermod -aG docker $(whoami)
+sudo systemctl enable --now docker
+sudo usermod -aG docker "$(whoami)"
 
-# Refresh group membership without requiring logout
-echo "Refreshing group membership..."
-newgrp docker <<EOF
-  echo "Installation complete!"
-  docker info
-EOF
+echo "[+] Docker CE installed successfully. Log out and back in for group changes to apply."
+docker --version
