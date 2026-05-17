@@ -1,4 +1,11 @@
-here is the command: 
-curl -sSL https://gitlab.neurolearninglabs.com/code-labz/scripts/-/raw/main/Installation-Scripts/Teleport/uninstall/uninstall.sh?ref_type=heads | bash
-wget -qO- "https://gitlab.neurolearninglabs.com/code-labz/scripts/-/raw/main/Installation-Scripts/Teleport/uninstall/uninstall.sh?ref_type=head" | bash
-use this command to instantly download and start ufw on debian based linux images or ones that have apt for their package manager make sure you run as root
+# Teleport Removal — Ubuntu
+
+Completely removes Teleport from Ubuntu/Debian.
+
+## Usage
+
+```bash
+curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Removal-Scripts/Teleport/ubuntu/uninstall.sh | bash
+```
+
+> ⚠️ Run as root.
