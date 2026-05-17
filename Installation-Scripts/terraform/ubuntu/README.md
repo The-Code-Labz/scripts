@@ -1,5 +1,9 @@
-wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+# Terraform — Ubuntu
 
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+Installs Terraform via the official HashiCorp APT repository.
 
-sudo apt update && sudo apt install terraform
+## Usage
+
+```bash
+curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Installation-Scripts/terraform/ubuntu/install.sh | bash
+```
