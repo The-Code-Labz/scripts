@@ -1,23 +1,8 @@
 #!/bin/bash
+set -e
 
-set -e  # Exit on error
-
-# Update package list
-echo "Updating package list..."
+echo "[+] Installing Podman on Oracle Linux..."
 sudo dnf update -y
-
-# Install Podman
-echo "Installing Podman..."
 sudo dnf install -y podman
-
-# Initialize Podman machine
-echo "Initializing Podman machine..."
-podman machine init
-
-# Start Podman machine
-echo "Starting Podman machine..."
-podman machine start
-
-# Display Podman info
-echo "Podman installation complete. Displaying Podman info:"
-podman info
+echo "[+] Podman installed successfully."
+podman --version
