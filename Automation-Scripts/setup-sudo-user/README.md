@@ -11,7 +11,21 @@ Grants an existing Linux user full passwordless sudo access.
 
 If validation fails, the script removes the invalid file and exits with an error — it will not leave a broken sudoers state behind.
 
-## Usage
+## Quick Run (curl)
+
+> **Note:** The script requires a username argument. Pipe to `bash -s -- <username>` to pass it.
+
+```bash
+curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Automation-Scripts/setup-sudo-user/grant-sudo.sh | sudo bash -s -- <username>
+```
+
+**Example:**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Automation-Scripts/setup-sudo-user/grant-sudo.sh | sudo bash -s -- dlynton
+```
+
+## Usage (local)
 
 ```bash
 sudo ./grant-sudo.sh <username>
