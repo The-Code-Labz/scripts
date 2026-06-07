@@ -22,7 +22,7 @@ curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/mai
 **Example:**
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Automation-Scripts/setup-sudo-user/grant-sudo.sh | sudo bash -s -- dlynton
+curl -sSL https://raw.githubusercontent.com/The-Code-Labz/scripts/refs/heads/main/Automation-Scripts/setup-sudo-user/grant-sudo.sh | sudo bash -s -- admin
 ```
 
 ## Usage (local)
@@ -34,7 +34,7 @@ sudo ./grant-sudo.sh <username>
 **Example:**
 
 ```bash
-sudo ./grant-sudo.sh dlynton
+sudo ./grant-sudo.sh admin
 ```
 
 ## Requirements
